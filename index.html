@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Page</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #ffe4ec;
+}
+
+/* القلوب */
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ff5c8a;
+  transform: rotate(45deg);
+  opacity: 0.8;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ff5c8a;
+  border-radius: 50%;
+}
+
+.heart::before { top: -10px; left: 0; }
+.heart::after { left: 10px; top: 0; }
+
+/* المربع */
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  width: 300px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 20px rgba(255,92,138,0.5);
+  transition: transform 0.3s ease, box-shadow 0.5s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 0 40px rgba(255,92,138,0.8);
+}
+
+#message {
+  display: none;
+  font-size: 22px;
+  color: #ff5c8a;
+  z-index: 1;
+  position: relative;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.8);}
+  100% { opacity: 1; transform: scale(1);}
+}
+
+.buttons { position: relative; height: 120px; }
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#yesBtn { background: #ff5c8a; color: white; }
+#noBtn { background: #ccc; position: absolute; left: 140px; top: 30px; }
+</style>
+</head>
+
+<body>
+
+<div id="hearts"></div>
+
+<div class="container" id="question">
+  <h2>Do you love me? 💕</h2>
+  <div class="buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
+
+<div class="container" id="message">
+  <h2>I knew it 😌💖</h2>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const question = document.getElementById("question");
+const message = document.getElementById("message");
+const heartsContainer = document.getElementById("hearts");
+
+// زر NO يتحرك عند الضغط
+noBtn.addEventListener("click", () => {
+  const x = Math.random() * 200;
+  const y = Math.random() * 80;
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+
+// إنشاء القلوب بدون حركة افتراضية
+const hearts = [];
+for(let i=0;i<30;i++){
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = Math.random() * -200 + "px"; // فوق الشاشة
+  heartsContainer.appendChild(heart);
+  hearts.push(heart);
+}
+
+// عند الضغط على YES، إظهار الرسالة وتحريك القلوب للأسفل
+yesBtn.addEventListener("click", () => {
+  question.style.display = "none";
+  message.style.display = "block";
+
+  hearts.forEach(heart => {
+    const duration = 3 + Math.random()*3; // مدة الهبوط
+    heart.style.transition = `top ${duration}s linear`;
+    heart.style.top = window.innerHeight + "px"; // تهبط إلى الأسفل
+  });
+});
+</script>
+
+</body>
+  </html>
